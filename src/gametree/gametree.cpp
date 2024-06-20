@@ -3,18 +3,7 @@
 #include "test/test.h"
 
 void build_gametree(std::vector<Game*>& games) {
-  if (!is_power_of_two(games.size() + 1)) {
-    return;
-  }
-
-  for (int n = 0; n < games.size(); n++) {
-    if (n * 2 + 1 < games.size()) {
-      games[n]->child_game_1 = games[n * 2 + 1];
-    }
-    if (n * 2 + 2 < games.size()) {
-      games[n]->child_game_2 = games[n * 2 + 2];
-    }
-  }
+  // TODO
 }
 
 TEST_CASE("build_gametree") {
@@ -44,13 +33,8 @@ TEST_CASE("build_gametree") {
 }
 
 bool is_power_of_two(int n) {
-  if (n <= 0) {
-    return false;
-  }
-  if (n == 1) {
-    return true;
-  }
-  return n % 2 == 0 && is_power_of_two(n / 2);
+  // TODO
+  return false;
 }
 
 TEST_CASE("is_powwer_of_two") {

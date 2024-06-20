@@ -27,38 +27,21 @@ Game::Game(std::string const& home_team, std::string const& away_team)
       child_game_2(nullptr) {}
 
 std::string Game::result() {
-  if (!has_result()) {
-    return "";
-  } else if (home_score == away_score) {
-    return "Unentschieden";
-  } else if (home_score > away_score) {
-    return home_team;
-  } else {
-    return away_team;
-  }
+  // TODO
+  return "";
 }
 
 void Game::set_result(int home_score, int away_score) {
-  home_score = home_score;
-  away_score = away_score;
+  // TODO
 }
 
-bool Game::has_result() { return (home_score != -1 && away_score != -1); }
+bool Game::has_result() {
+  // TODO
+  return false;
+}
 
 void Game::update_teams() {
-  if (child_game_1 == nullptr || child_game_2 == nullptr) {
-    return;
-  }
-
-  child_game_1->update_teams();
-  child_game_2->update_teams();
-
-  if (child_game_1->has_result()) {
-    home_team = child_game_1->result();
-  }
-  if (child_game_2->has_result()) {
-    away_team = child_game_2->result();
-  }
+  // TODO
 }
 
 TEST_CASE("Game States for new games") {
