@@ -1,46 +1,22 @@
 #include "gametree.h"
 
+#include <iostream>
+
 #include "test/test.h"
 
-void build_gametree(std::vector<Game*>& games) {
-  if (!is_power_of_two(games.size() + 1)) {
-    return;
+// Privater Namensraum mit Hilfsfunktionen, die nur hier gebraucht werden.
+namespace {
+Game* get_left_child(std::vector<Game*>& games, size_t n) {
+  if (2 * n + 1 < games.size()) {
+    return games[2 * n + 1];
   }
-
-  for (int n = 0; n < games.size(); n++) {
-    if (n * 2 + 1 < games.size()) {
-      games[n]->child_game_1 = games[n * 2 + 1];
-    }
-    if (n * 2 + 2 < games.size()) {
-      games[n]->child_game_2 = games[n * 2 + 2];
-    }
-  }
+  return nullptr;
 }
-
-TEST_CASE("build_gametree") {
-  std::vector<Game*> games;
-  for (int i = 0; i < 15; i++) {
-    games.push_back(new Game());
+Game* get_right_child(std::vector<Game*>& games, size_t n) {
+  if (2 * n + 2 < games.size()) {
+    return games[2 * n + 2];
   }
-
-  build_gametree(games);
-
-  CHECK(games[0]->child_game_1 == games[1]);  // Halbfinale 1
-  CHECK(games[0]->child_game_2 == games[2]);  // Halbfinale 2
-
-  CHECK(games[1]->child_game_1 == games[3]);  // Viertelfinale 1
-  CHECK(games[1]->child_game_2 == games[4]);  // Viertelfinale 2
-  CHECK(games[2]->child_game_1 == games[5]);  // Viertelfinale 3
-  CHECK(games[2]->child_game_2 == games[6]);  // Viertelfinale 4
-
-  CHECK(games[3]->child_game_1 == games[7]);   // Achtelfinale 1
-  CHECK(games[3]->child_game_2 == games[8]);   // Achtelfinale 2
-  CHECK(games[4]->child_game_1 == games[9]);   // Achtelfinale 3
-  CHECK(games[4]->child_game_2 == games[10]);  // Achtelfinale 4
-  CHECK(games[5]->child_game_1 == games[11]);  // Achtelfinale 5
-  CHECK(games[5]->child_game_2 == games[12]);  // Achtelfinale 6
-  CHECK(games[6]->child_game_1 == games[13]);  // Achtelfinale 7
-  CHECK(games[6]->child_game_2 == games[14]);  // Achtelfinale 8
+  return nullptr;
 }
 
 bool is_power_of_two(int n) {
@@ -53,31 +29,70 @@ bool is_power_of_two(int n) {
   return n % 2 == 0 && is_power_of_two(n / 2);
 }
 
-TEST_CASE("is_powwer_of_two") {
-  CHECK(is_power_of_two(1));
-  CHECK(is_power_of_two(2));
-  CHECK(is_power_of_two(4));
-  CHECK(is_power_of_two(8));
-  CHECK(is_power_of_two(16));
-  CHECK(is_power_of_two(32));
-  CHECK(is_power_of_two(64));
-  CHECK(is_power_of_two(128));
-  CHECK(is_power_of_two(256));
-  CHECK(is_power_of_two(512));
-  CHECK(is_power_of_two(1024));
-  CHECK(is_power_of_two(2048));
-  CHECK(is_power_of_two(4096));
-  CHECK(is_power_of_two(8192));
-  CHECK(is_power_of_two(16384));
-  CHECK(!is_power_of_two(3));
-  CHECK(!is_power_of_two(5));
-  CHECK(!is_power_of_two(6));
-  CHECK(!is_power_of_two(7));
-  CHECK(!is_power_of_two(9));
-  CHECK(!is_power_of_two(10));
-  CHECK(!is_power_of_two(11));
-  CHECK(!is_power_of_two(12));
-  CHECK(!is_power_of_two(13));
-  CHECK(!is_power_of_two(14));
-  CHECK(!is_power_of_two(15));
+void print_gametype(int i) {
+  if (i <= 0) {
+    std::cout << "Finale: ";
+    return;
+  }
+  if (i <= 2) {
+    std::cout << "Halbfinale " << i << ": ";
+    return;
+  }
+  if (i <= 6) {
+    std::cout << "Viertelfinale " << i - 2 << ": ";
+    return;
+  }
+  std::cout << "Achtelfinale " << i - 6 << ": ";
 }
+
+void print_game(Game* game) {
+  if (game == nullptr) {
+    return;
+  }
+  if (game->home_team == "" || game->away_team == "") {
+    std::cout << "Spielpaarung noch nicht bekannt" << std::endl;
+    return;
+  }
+  std::cout << game->home_team << " - " << game->away_team << ": ";
+  if (!game->has_result()) {
+    std::cout << "noch nicht gespielt" << std::endl;
+    return;
+  }
+  std::cout << game->home_score << " - " << game->away_score << std::endl;
+}
+
+void print_games(std::vector<Game*> games) {
+  for (int i = 0; i < games.size(); i++) {
+    print_gametype(i);
+    print_game(games[i]);
+  }
+}
+}  // namespace
+
+// Implementierung der Gametree-Klasse.
+
+Gametree::Gametree(){};
+
+void Gametree::add_game(Game* g) { games.push_back(g); }
+
+void Gametree::update_teams() {
+  build_gametree();
+  games[0]->update_teams();
+}
+
+void Gametree::set_result(size_t pos, int home, int away) {
+  games[pos]->set_result(home, away);
+}
+
+void Gametree::build_gametree() {
+  if (!is_power_of_two(games.size() + 1)) {
+    return;
+  }
+
+  for (int n = 0; n < games.size(); n++) {
+    games[n]->child_game_1 = get_left_child(games, n);
+    games[n]->child_game_2 = get_right_child(games, n);
+  }
+}
+
+void Gametree::print() { print_games(games); }

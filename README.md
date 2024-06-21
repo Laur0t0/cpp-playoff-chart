@@ -1,14 +1,14 @@
-# Turnierbaum
+# Turnierbaum - Alternative Umsetzung
 
-In diesem Repo gibt es Aufgaben zur Umsetzung eines Turnierbaums (wie z.B. bei der Fußball-EM) in C++.
+Dieser Branch ist keine Lösung und passt auch nicht zu den anderen Branches.
 
-Die Aufgaben sind in drei Verzeichnisse unterhalb von `src` aufgeteilt:
+Er ist eine alternative Umsetzung des Turnierbaum-Konzepts, die sich aus einer Diskussion in der Vorlesung ergeben hat.
+Genau genommen ist es eine solidere und flexiblere Umsetzung, die darauf basiert,
+dass der Games-Vektor in einer eigenen Klasse `Gametree` gekapselt wird.
 
-* `game`: Implementierung eines Datentyps `Game`, der eine Spielpaarung repräsentiert.
-* `gametree`: Implementierung einer Funktion, die aus einer Liste von Spielen einen Spielbaum erzeugt.
-* `tournament`: Implementierung einer `main`-Funktion, die ein Turnier repräsentiert und auswertet.
+Die Funktionen, die Sie in den anderen Branches als Aufgaben implementiert haben,
+finden Sie hier teilweise als Hilfsmethoden, teilweise als freie Funktionen in
+einem anonymen Namespace in der Datei `gametree.cpp`.
 
-Sie sollten sich die Aufgaben in dieser Reihenfolge ansehen und bearbeiten, da sie aufeinander aufbauen.
-Es gibt auch einen Lösungsbranch, aus dem Sie ggf. die Lösungen übernehmen können.
-
-**Beachten Sie auch die README-Dateien in den einzelnen Verzeichnissen!**
+Die Tests und READMEs aus den anderen Branches sind hier nicht enthalten,
+da sie nicht zu dieser alternativen Umsetzung passen.
