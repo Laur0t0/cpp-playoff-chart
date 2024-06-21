@@ -39,8 +39,8 @@ std::string Game::result() {
 }
 
 void Game::set_result(int home_score, int away_score) {
-  home_score = home_score;
-  away_score = away_score;
+  this->home_score = home_score;
+  this->away_score = away_score;
 }
 
 bool Game::has_result() { return (home_score != -1 && away_score != -1); }
