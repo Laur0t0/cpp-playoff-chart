@@ -27,12 +27,20 @@ Game::Game(std::string const& home_team, std::string const& away_team)
       child_game_2(nullptr) {}
 
 std::string Game::result() {
-  // TODO
-  return "";
+  if (!has_result()) {
+    return "";
+  } else if (home_score == away_score) {
+    return "Unentschieden";
+  } else if (home_score > away_score) {
+    return home_team;
+  } else {
+    return away_team;
+  }
 }
 
 void Game::set_result(int home_score, int away_score) {
-  // TODO
+  this->home_score = home_score;
+  this->away_score = away_score;
 }
 
 bool Game::has_result() {
