@@ -44,12 +44,23 @@ void Game::set_result(int home_score, int away_score) {
 }
 
 bool Game::has_result() {
-  // TODO
-  return false;
+  return (home_score != -1 && away_score != -1);
 }
 
 void Game::update_teams() {
-  // TODO
+  if (child_game_1 == nullptr || child_game_2 == nullptr) {
+    return;
+  }
+
+  child_game_1->update_teams();
+  child_game_2->update_teams();
+
+  if (child_game_1->has_result()) {
+    home_team = child_game_1->result();
+  }
+  if (child_game_2->has_result()) {
+    away_team = child_game_2->result();
+  }
 }
 
 TEST_CASE("Game States for new games") {

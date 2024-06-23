@@ -68,16 +68,40 @@ int main() {
 }
 
 void print_gametype(int i) {
-  // TODO
-  std::cout << "print_gametype not implemented" << std::endl;
+  if (i <= 0) {
+    std::cout << "Finale: ";
+    return;
+  }
+  if (i <= 2) {
+    std::cout << "Halbfinale " << i << ": ";
+    return;
+  }
+  if (i <= 6) {
+    std::cout << "Viertelfinale " << i - 2 << ": ";
+    return;
+  }
+  std::cout << "Achtelfinale " << i - 6 << ": ";
 }
 
 void print_game(Game* game) {
-  // TODO
-  std::cout << "print_game not implemented" << std::endl;
+  if (game == nullptr) {
+    return;
+  }
+  if (game->home_team == "" || game->away_team == "") {
+    std::cout << "Spielpaarung noch nicht bekannt" << std::endl;
+    return;
+  }
+  std::cout << game->home_team << " - " << game->away_team << ": ";
+  if (!game->has_result()) {
+    std::cout << "noch nicht gespielt" << std::endl;
+    return;
+  }
+  std::cout << game->home_score << " - " << game->away_score << std::endl;
 }
 
 void print_games(std::vector<Game*> games) {
-  // TODO
-  std::cout << "print_games not implemented" << std::endl;
+  for (int i = 0; i < games.size(); i++) {
+    print_gametype(i);
+    print_game(games[i]);
+  }
 }
